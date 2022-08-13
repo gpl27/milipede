@@ -1,6 +1,10 @@
 # Build Instructions
 ## Linux
-`cd ~/milipede/build`
+`cd milipede`
+
+`mkdir build`
+
+`cd build`
 
 `cmake ../src`
 
