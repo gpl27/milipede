@@ -67,11 +67,6 @@ _deps
 
 ## VSCode
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
 .history/
@@ -80,4 +75,4 @@ _deps
 *.vsix
 
 
-build/milipede
+build/*

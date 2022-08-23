@@ -9,13 +9,12 @@
 
 #include <stdio.h>
 #include "raylib.h"
-// #include "mobs.h"
-//      Contem as definicoes de dados
+#include "structs.h"
+#include "graphics.h"
 
-#define SCREEN_WIDTH 360
-#define SCREEN_HEIGHT 640
-#define FONT_SIZE 10
-#define BARRA_H (FONT_SIZE*2)
+#define FONT_SIZE 20
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT (SCREEN_WIDTH + 3*FONT_SIZE)
 
 int main(void) {
 
@@ -50,9 +49,7 @@ int main(void) {
         // ------------------------------
         BeginDrawing();
 
-            ClearBackground(DARKGRAY);
-            DrawRectangle(0, 0, SCREEN_WIDTH, BARRA_H, BLACK);
-            DrawRectangle(0, (SCREEN_HEIGHT - BARRA_H), SCREEN_WIDTH, BARRA_H, BLACK);
+            DrawBackground(SCREEN_WIDTH, SCREEN_HEIGHT, FONT_SIZE);
 
         EndDrawing();
     }
