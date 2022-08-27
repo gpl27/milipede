@@ -22,8 +22,8 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 # Our Project
-
-add_executable(${PROJECT_NAME} main.c)
+add_executable(${PROJECT_NAME} main.c structs.c graphics.c)
+target_include_directories(milipede PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 

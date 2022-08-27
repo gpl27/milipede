@@ -12,9 +12,6 @@
 #include "structs.h"
 #include "graphics.h"
 
-#define FONT_SIZE 20
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT (SCREEN_WIDTH + 3*FONT_SIZE)
 
 int main(void) {
 
@@ -27,6 +24,8 @@ int main(void) {
 
     // Inicializar Fazendeiro: Nome, numero de cogumelos colhidos, paralisado/movimento/morto
     // Inicializar os Cogumelos: vetor de typedef Cogumelo
+    Shroom shrooms[NUM_SHROOMS];
+    InitShrooms(shrooms);
     // Inicializar as Milipedes
     // Inicializar as Aranhas
     // Inicializar o Status do jogo
@@ -49,7 +48,8 @@ int main(void) {
         // ------------------------------
         BeginDrawing();
 
-            DrawBackground(SCREEN_WIDTH, SCREEN_HEIGHT, FONT_SIZE);
+            DrawBackground();
+            DrawShrooms(shrooms);
 
         EndDrawing();
     }

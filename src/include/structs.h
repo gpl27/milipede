@@ -6,6 +6,9 @@
 #define STRUCTS_H
 #include "raylib.h"
 
+#define NUM_SHROOMS 60
+#define SHROOM_SIZE 10
+
 /* State Enumerations */
 typedef enum {
     SLAIN,
@@ -42,7 +45,6 @@ typedef struct {
 
 typedef struct {
     Rectangle pos;
-    Vector2 v;
     ShroomState state;
 } Shroom;
 
@@ -65,5 +67,8 @@ typedef struct {
     char *name;
     GameState state;
 } State;
+
+/* Structure Initialization Functions */
+void InitShrooms(Shroom shroom[]);
 
 #endif
