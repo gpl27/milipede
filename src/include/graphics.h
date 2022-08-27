@@ -13,6 +13,8 @@
 
 void DrawBackground(void);
 void DrawShrooms(Shroom shrooms[]);
-
+void DrawMilipedes(Milipede milipedes[]);
+void DrawSpiders(Spider spiders[]);
+void DrawFarmer(Farmer farmer);
 
 #endif

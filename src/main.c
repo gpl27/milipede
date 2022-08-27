@@ -23,11 +23,17 @@ int main(void) {
     SetTargetFPS(60);
 
     // Inicializar Fazendeiro: Nome, numero de cogumelos colhidos, paralisado/movimento/morto
+    Farmer player;
+    InitFarmer(&player);
     // Inicializar os Cogumelos: vetor de typedef Cogumelo
     Shroom shrooms[NUM_SHROOMS];
     InitShrooms(shrooms);
     // Inicializar as Milipedes
+    Milipede milipedes[NUM_MILIPEDES];
+    InitMilipedes(milipedes);
     // Inicializar as Aranhas
+    Spider spiders[NUM_SPIDERS];
+    InitSpiders(spiders);
     // Inicializar o Status do jogo
 
     // Funcao com loop apenas do Menu inicial
@@ -50,6 +56,9 @@ int main(void) {
 
             DrawBackground();
             DrawShrooms(shrooms);
+            DrawMilipedes(milipedes);
+            DrawSpiders(spiders);
+            DrawFarmer(player);
 
         EndDrawing();
     }

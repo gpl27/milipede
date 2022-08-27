@@ -9,11 +9,21 @@
 #define NUM_SHROOMS 60
 #define SHROOM_SIZE 10
 
+#define NUM_MILIPEDES 1
+#define MILIPEDE_SIZE 10
+#define MILIPEDE_V 5
+
+#define NUM_SPIDERS 2
+#define SPIDER_SIZE 20
+#define SPIDER_V 10
+
+#define FARMER_SIZE 20
+
 /* State Enumerations */
 typedef enum {
     SLAIN,
     PARALYZED,
-    MOVING
+    ALIVE
 } PlayerState;
 
 typedef enum {
@@ -50,7 +60,7 @@ typedef struct {
 
 // pos will have to be updated when length is incremented and decremented (width and length)
 typedef struct {
-    Rectangle pos;
+    Vector2 pos;
     Vector2 v;
     int length;
 } Milipede;
@@ -70,5 +80,7 @@ typedef struct {
 
 /* Structure Initialization Functions */
 void InitShrooms(Shroom shroom[]);
-
+void InitMilipedes(Milipede milipedes[]);
+void InitSpiders(Spider spiders[]);
+void InitFarmer(Farmer *farmer);
 #endif
