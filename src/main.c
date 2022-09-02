@@ -35,6 +35,8 @@ int main(void) {
     Spider spiders[NUM_SPIDERS];
     InitSpiders(spiders);
     // Inicializar o Status do jogo
+    State gameState;
+    InitState(&gameState);
 
     // Funcao com loop apenas do Menu inicial
 
@@ -45,6 +47,10 @@ int main(void) {
         // Update
         // ------------------------------
 
+            // UpdateSpiders
+            // UpdateMilipedes
+            // UpdateFarmer
+            UpdateFarmer(&player);
 
 
 
@@ -55,6 +61,7 @@ int main(void) {
         BeginDrawing();
 
             DrawBackground();
+            DrawStats(gameState, player);
             DrawShrooms(shrooms);
             DrawMilipedes(milipedes);
             DrawSpiders(spiders);

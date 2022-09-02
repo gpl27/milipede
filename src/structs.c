@@ -7,6 +7,9 @@
 #include "graphics.h"
 
 
+/*
+ * Initialization functions
+ */
 void InitShrooms(Shroom shroom[]) {
     int i;
 
@@ -57,8 +60,28 @@ void InitFarmer(Farmer *farmer) {
     farmer->pos.height = FARMER_SIZE;
     farmer->shrooms = 0;
     farmer->state = ALIVE;
-    farmer->v.x = 0;
-    farmer->v.y = 0;
 
     return;
 }
+
+void InitState(State *gameState) {
+    gameState->lives = 3;
+    gameState->shots = 200;
+    gameState->state = START;
+
+    return;
+}
+
+/*
+ * Update Functions
+ */
+void UpdateFarmer(Farmer *farmer) {
+    // Movement
+    if (IsKeyDown(KEY_RIGHT) && ((farmer->pos.x + farmer->pos.width) < SCREEN_WIDTH)) farmer->pos.x += FARMER_V;
+    if (IsKeyDown(KEY_LEFT) && (farmer->pos.x > 0)) farmer->pos.x -= FARMER_V;
+    if (IsKeyDown(KEY_UP) && (farmer->pos.y > (SCREEN_HEIGHT - MENU_HEIGHT - SCREEN_WIDTH/4))) farmer->pos.y -= FARMER_V;
+    if (IsKeyDown(KEY_DOWN) && ((farmer->pos.y + farmer->pos.height) < (SCREEN_HEIGHT - MENU_HEIGHT))) farmer->pos.y += FARMER_V;
+
+    return;
+}
+

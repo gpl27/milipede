@@ -11,13 +11,14 @@
 
 #define NUM_MILIPEDES 1
 #define MILIPEDE_SIZE 10
-#define MILIPEDE_V 5
+#define MILIPEDE_V 3
 
 #define NUM_SPIDERS 2
 #define SPIDER_SIZE 20
-#define SPIDER_V 10
+#define SPIDER_V 5
 
 #define FARMER_SIZE 20
+#define FARMER_V 5
 
 /* State Enumerations */
 typedef enum {
@@ -48,7 +49,6 @@ typedef enum {
 /* Game Object Structures */
 typedef struct {
     Rectangle pos;
-    Vector2 v;
     int shrooms;
     PlayerState state;
 } Farmer;
@@ -83,4 +83,8 @@ void InitShrooms(Shroom shroom[]);
 void InitMilipedes(Milipede milipedes[]);
 void InitSpiders(Spider spiders[]);
 void InitFarmer(Farmer *farmer);
+void InitState(State *gameState);
+
+void UpdateFarmer(Farmer *farmer);
+
 #endif

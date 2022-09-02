@@ -19,6 +19,13 @@ void DrawBackground(void) {
     return;
 }
 
+void DrawStats(State gameState, Farmer farmer) {
+    const char *statsText = TextFormat("Score: %2d | Shrooms: %2d | Lives: %1d | Shots: %3d", farmer.shrooms, farmer.shrooms, gameState.lives, gameState.shots);
+    int statsTextLength = MeasureText(statsText, FONT_SIZE);
+
+    DrawText(statsText, (SCREEN_WIDTH - statsTextLength)/2, ((4*SCREEN_HEIGHT - 3*MENU_HEIGHT)/4), FONT_SIZE, WHITE);
+}
+
 // TODO: Add ShroomState switch
 void DrawShrooms(Shroom shrooms[]) {
     int i;
