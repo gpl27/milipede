@@ -24,6 +24,8 @@ void DrawStats(State gameState, Farmer farmer) {
     int statsTextLength = MeasureText(statsText, FONT_SIZE);
 
     DrawText(statsText, (SCREEN_WIDTH - statsTextLength)/2, ((4*SCREEN_HEIGHT - 3*MENU_HEIGHT)/4), FONT_SIZE, WHITE);
+
+    return;
 }
 
 // TODO: Add ShroomState switch
@@ -57,8 +59,21 @@ void DrawSpiders(Spider spiders[]) {
     for (i = 0; i < NUM_SPIDERS; i++) {
         DrawRectangleRec(spiders[i].pos, DARKPURPLE);
     }
+
+    return;
 }
 
 void DrawFarmer(Farmer farmer) {
     DrawRectangleRec(farmer.pos, WHITE);
+
+    return;
+}
+
+void DrawExitWindowRequest(void) {
+    char exitText[] = "Você tem certeza que deseja sair? [S/N]";
+    int exitTextLength = MeasureText(exitText, FONT_SIZE);
+    DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/4)/2, SCREEN_WIDTH, SCREEN_WIDTH/4, DARKBLUE);
+    DrawText(exitText, (SCREEN_WIDTH - exitTextLength)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, WHITE);
+
+    return;
 }

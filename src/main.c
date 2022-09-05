@@ -14,7 +14,8 @@
 
 
 int main(void) {
-
+    bool exitWindow = false;
+    bool exitWindowRequested = false;
     // ------------------------------
     // Inicializacao
     // ------------------------------
@@ -42,18 +43,42 @@ int main(void) {
 
 
     // Main Game Loop
-    while (!WindowShouldClose()) {
+    while (!exitWindow) {
+
+
         // ------------------------------
         // Update
         // ------------------------------
+            // windowshouldclose
+            if (WindowShouldClose()) {
+                exitWindowRequested = true;
+                gameState.state = PAUSED;
+            } 
+            // gamestate == playing
+            if (gameState.state == PLAYING) {
+                // UpdateSpiders
+                // UpdateMilipedes
+                // UpdateFarmer
+                UpdateFarmer(&player);
 
-            // UpdateSpiders
-            // UpdateMilipedes
-            // UpdateFarmer
-            UpdateFarmer(&player);
+                //TODO
+                //UpdateState();
 
+            } 
+            // gamestate == paused
+            else if (gameState.state == PAUSED) {
+                if (exitWindowRequested) {
+                    if (IsKeyPressed(KEY_S)) {
+                        exitWindow = true;
+                    }
+                    else if (IsKeyPressed(KEY_N)) {
+                        exitWindowRequested = false;
+                        gameState.state = PLAYING;
+                    }
+                }          
+            }
 
-
+            
 
         // ------------------------------
         // Draw
@@ -65,7 +90,23 @@ int main(void) {
             DrawShrooms(shrooms);
             DrawMilipedes(milipedes);
             DrawSpiders(spiders);
-            DrawFarmer(player);
+            DrawFarmer(player);  
+              
+            // gamestate == paused
+            if (gameState.state == PAUSED) {
+                //TODO
+                // DrawMenu();
+            }    
+               
+            if (exitWindowRequested) {
+                DrawExitWindowRequest();
+            }      
+            
+
+          
+
+        
+    
 
         EndDrawing();
     }

@@ -17,5 +17,6 @@ void DrawMilipedes(Milipede milipedes[]);
 void DrawSpiders(Spider spiders[]);
 void DrawFarmer(Farmer farmer);
 void DrawStats(State gameState, Farmer farmer);
+void DrawExitWindowRequest(void);
 
 #endif

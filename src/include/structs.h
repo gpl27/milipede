@@ -40,10 +40,18 @@ typedef enum {
 } SpiderState;
 
 typedef enum {
-    START,
     PAUSED,
     PLAYING
 } GameState;
+
+typedef enum {
+    START,
+    LOAD,
+    SAVE,
+    RANKING,
+    EXIT_MENU,
+    EXIT_GAME
+} MenuState;
 
 
 /* Game Object Structures */
