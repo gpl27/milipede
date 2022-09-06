@@ -11,9 +11,9 @@ void DrawBackground(void) {
     char menuText[] = "ESC - Sair | C - Carregar | P - Pause | R - Ranking";
     int menuTextLength = MeasureText(menuText, FONT_SIZE);
     
-    ClearBackground(DARKBLUE);
+    ClearBackground(MENU_COLOR);
     DrawRectangle(0, MENU_HEIGHT, SCREEN_WIDTH, SCREEN_WIDTH, BLACK);
-    DrawText(menuText, (SCREEN_WIDTH - menuTextLength)/2, MENU_HEIGHT/4, FONT_SIZE, WHITE);
+    DrawText(menuText, (SCREEN_WIDTH - menuTextLength)/2, MENU_HEIGHT/4, FONT_SIZE, FONT_COLOR);
     DrawRectangle(0, (SCREEN_HEIGHT - MENU_HEIGHT - (SCREEN_WIDTH/4)), SCREEN_WIDTH, (SCREEN_WIDTH/4), DARKBROWN);
 
     return;
@@ -23,7 +23,7 @@ void DrawStats(State gameState, Farmer farmer) {
     const char *statsText = TextFormat("Score: %2d | Shrooms: %2d | Lives: %1d | Shots: %3d", farmer.shrooms, farmer.shrooms, gameState.lives, gameState.shots);
     int statsTextLength = MeasureText(statsText, FONT_SIZE);
 
-    DrawText(statsText, (SCREEN_WIDTH - statsTextLength)/2, ((4*SCREEN_HEIGHT - 3*MENU_HEIGHT)/4), FONT_SIZE, WHITE);
+    DrawText(statsText, (SCREEN_WIDTH - statsTextLength)/2, ((4*SCREEN_HEIGHT - 3*MENU_HEIGHT)/4), FONT_SIZE, FONT_COLOR);
 
     return;
 }
@@ -64,7 +64,7 @@ void DrawSpiders(Spider spiders[]) {
 }
 
 void DrawFarmer(Farmer farmer) {
-    DrawRectangleRec(farmer.pos, WHITE);
+    DrawRectangleRec(farmer.pos, FONT_COLOR);
 
     return;
 }
@@ -72,8 +72,15 @@ void DrawFarmer(Farmer farmer) {
 void DrawExitWindowRequest(void) {
     char exitText[] = "Você tem certeza que deseja sair? [S/N]";
     int exitTextLength = MeasureText(exitText, FONT_SIZE);
-    DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/4)/2, SCREEN_WIDTH, SCREEN_WIDTH/4, DARKBLUE);
-    DrawText(exitText, (SCREEN_WIDTH - exitTextLength)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, WHITE);
+    DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/4)/2, SCREEN_WIDTH, SCREEN_WIDTH/4, MENU_COLOR);
+    DrawText(exitText, (SCREEN_WIDTH - exitTextLength)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+
+    return;
+}
+
+void DrawMenu() {
+    DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/4)/2, SCREEN_WIDTH, SCREEN_WIDTH/4, MENU_COLOR);
+    DrawText("MENU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
 
     return;
 }

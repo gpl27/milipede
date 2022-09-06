@@ -93,3 +93,17 @@ void UpdateFarmer(Farmer *farmer) {
     return;
 }
 
+void UpdateState(State *gameState) {
+    if (IsKeyPressed(KEY_P)) {
+        gameState->state = (gameState->state)? PAUSED : PLAYING;
+    }
+
+
+    return;
+}
+
+void UpdateMenuState(MenuState *menuState) {
+
+    return;
+}
+

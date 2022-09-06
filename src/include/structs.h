@@ -35,7 +35,7 @@ typedef enum {
 
 typedef enum {
     DEAD,
-    HIDDEN,
+    OFFSCENE,
     ONSCENE
 } SpiderState;
 
@@ -45,6 +45,7 @@ typedef enum {
 } GameState;
 
 typedef enum {
+    HIDDEN,
     START,
     LOAD,
     SAVE,
@@ -93,6 +94,9 @@ void InitSpiders(Spider spiders[]);
 void InitFarmer(Farmer *farmer);
 void InitState(State *gameState);
 
+/* Update Functions */
 void UpdateFarmer(Farmer *farmer);
+void UpdateState(State *gameState);
+void UpdateMenuState(MenuState *menuState);
 
 #endif

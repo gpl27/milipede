@@ -38,6 +38,9 @@ int main(void) {
     // Inicializar o Status do jogo
     State gameState;
     InitState(&gameState);
+    // Inicializar o Status do Menu
+    MenuState menuState = HIDDEN;
+
 
     // Funcao com loop apenas do Menu inicial
 
@@ -49,6 +52,9 @@ int main(void) {
         // ------------------------------
         // Update
         // ------------------------------
+            
+            UpdateState(&gameState);    
+            
             // windowshouldclose
             if (WindowShouldClose()) {
                 exitWindowRequested = true;
@@ -61,19 +67,22 @@ int main(void) {
                 // UpdateFarmer
                 UpdateFarmer(&player);
 
-                //TODO
-                //UpdateState();
 
             } 
             // gamestate == paused
             else if (gameState.state == PAUSED) {
+                //TODO
+                //UpdateMenu(&menuState);
+                
                 if (exitWindowRequested) {
                     if (IsKeyPressed(KEY_S)) {
                         exitWindow = true;
                     }
                     else if (IsKeyPressed(KEY_N)) {
                         exitWindowRequested = false;
-                        gameState.state = PLAYING;
+                        if (!menuState) {
+                            gameState.state = PLAYING; 
+                        } 
                     }
                 }          
             }
@@ -94,8 +103,7 @@ int main(void) {
               
             // gamestate == paused
             if (gameState.state == PAUSED) {
-                //TODO
-                // DrawMenu();
+                DrawMenu();
             }    
                
             if (exitWindowRequested) {
