@@ -6,6 +6,7 @@
 #include "raylib.h"
 #include "graphics.h"
 
+static Wall CheckCollisionBoundary(Rectangle pos);
 
 /*
  * Initialization functions
@@ -48,6 +49,8 @@ void InitSpiders(Spider spiders[]) {
         spiders[i].pos.height = SPIDER_SIZE;
         spiders[i].state = ONSCENE;
         // TODO: define spider velocity
+        spiders[i].v.x = GetRandomValue(-SPIDER_V, SPIDER_V);
+        spiders[i].v.y = GetRandomValue(-SPIDER_V, SPIDER_V);
     }
 
     return;
@@ -128,3 +131,54 @@ void UpdateMenuState(MenuState *menuState) {
     return;
 }
 
+void UpdateSpiders(Spider spiders[]) {
+
+    // TODO: check if all spiders are dead
+
+    int i;
+    for (i = 0; i < NUM_SPIDERS; i++) {
+        // Check collision with walls
+        switch(CheckCollisionBoundary(spiders[i].pos)) {
+            case LEFT:
+            case RIGHT:
+                spiders[i].v.x = -spiders[i].v.x;
+                break;
+            case TOP:
+            case BOTTOM:
+                spiders[i].v.y = -spiders[i].v.y;
+                break;
+        }
+
+        // Move spiders
+        spiders[i].pos.x += spiders[i].v.x;
+        spiders[i].pos.y += spiders[i].v.y;
+
+    }
+
+    return; 
+}
+
+void UpdateMilipedes(Milipede milipedes[]) {
+
+    // Check if milipede dead
+        // if true, generate a new one
+
+    // move milipede
+
+    return;
+}
+
+
+static Wall CheckCollisionBoundary(Rectangle pos) {
+    if (pos.x <= 0) {
+        return LEFT;
+    } else if (pos.x + pos.width >= SCREEN_WIDTH) {
+        return RIGHT;
+    } else if (pos.y <= MENU_HEIGHT) {
+        return TOP;
+    } else if (pos.y + pos.height >= MENU_HEIGHT + SCREEN_WIDTH) {
+        return BOTTOM;
+    } else {
+        return NONE;
+    }
+}

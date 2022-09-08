@@ -54,6 +54,13 @@ typedef enum {
     EXIT_GAME
 } MenuState;
 
+typedef enum {
+    NONE,
+    TOP,
+    RIGHT,
+    BOTTOM,
+    LEFT
+} Wall;
 
 /* Game Object Structures */
 typedef struct {
@@ -98,5 +105,6 @@ void InitState(State *gameState);
 void UpdateFarmer(Farmer *farmer);
 void UpdateState(State *gameState);
 void UpdateMenuState(MenuState *menuState);
+void UpdateSpiders(Spider spiders[]);
 
 #endif

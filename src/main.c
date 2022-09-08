@@ -52,27 +52,27 @@ int main(void) {
         // Update
         // ------------------------------
             
-            UpdateState(&gameState);    
-            
-            // windowshouldclose
-            if (WindowShouldClose()) {
-                menuState = EXIT_GAME_REQUEST;
-                gameState.state = PAUSED;
-            } 
-            // gamestate == playing
-            if (gameState.state == PLAYING) {
-                // UpdateSpiders
-                // UpdateMilipedes
-                // UpdateFarmer
-                UpdateFarmer(&player);
+        UpdateState(&gameState);    
+        
+        // windowshouldclose
+        if (WindowShouldClose()) {
+            menuState = EXIT_GAME_REQUEST;
+            gameState.state = PAUSED;
+        } 
+        // gamestate == playing
+        if (gameState.state == PLAYING) {
+            // UpdateSpiders
+            UpdateSpiders(spiders);
+            // UpdateMilipedes
+            // UpdateFarmer
+            UpdateFarmer(&player);
 
 
-            } 
-            // gamestate == paused
-            else if (gameState.state == PAUSED) {
-                //TODO
-                UpdateMenuState(&menuState);
-            }
+        } 
+        // gamestate == paused
+        else if (gameState.state == PAUSED) {
+            UpdateMenuState(&menuState);
+        }
 
             
 
@@ -96,12 +96,6 @@ int main(void) {
             if (menuState == EXIT_GAME_REQUEST) {
                 DrawExitWindowRequest();
             }      
-            
-
-          
-
-        
-    
 
         EndDrawing();
     }
