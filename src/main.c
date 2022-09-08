@@ -15,7 +15,6 @@
 
 int main(void) {
     bool exitWindow = false;
-    bool exitWindowRequested = false;
     // ------------------------------
     // Inicializacao
     // ------------------------------
@@ -46,7 +45,7 @@ int main(void) {
 
 
     // Main Game Loop
-    while (!exitWindow) {
+    while (menuState != EXIT_GAME) {
 
 
         // ------------------------------
@@ -57,7 +56,7 @@ int main(void) {
             
             // windowshouldclose
             if (WindowShouldClose()) {
-                exitWindowRequested = true;
+                menuState = EXIT_GAME_REQUEST;
                 gameState.state = PAUSED;
             } 
             // gamestate == playing
@@ -72,19 +71,7 @@ int main(void) {
             // gamestate == paused
             else if (gameState.state == PAUSED) {
                 //TODO
-                //UpdateMenu(&menuState);
-                
-                if (exitWindowRequested) {
-                    if (IsKeyPressed(KEY_S)) {
-                        exitWindow = true;
-                    }
-                    else if (IsKeyPressed(KEY_N)) {
-                        exitWindowRequested = false;
-                        if (!menuState) {
-                            gameState.state = PLAYING; 
-                        } 
-                    }
-                }          
+                UpdateMenuState(&menuState);
             }
 
             
@@ -106,7 +93,7 @@ int main(void) {
                 DrawMenu();
             }    
                
-            if (exitWindowRequested) {
+            if (menuState == EXIT_GAME_REQUEST) {
                 DrawExitWindowRequest();
             }      
             

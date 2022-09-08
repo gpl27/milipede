@@ -104,6 +104,27 @@ void UpdateState(State *gameState) {
 
 void UpdateMenuState(MenuState *menuState) {
 
+    if (*menuState == EXIT_GAME_REQUEST) {
+        if (IsKeyPressed(KEY_S)) {
+            *menuState = EXIT_GAME;
+        }
+        else if (IsKeyPressed(KEY_N)) {
+            *menuState = ACTIVE;
+        }
+    } else {
+
+        if (IsKeyPressed(KEY_N)) {
+            // TODO: resetar jogo
+        } else if (IsKeyPressed(KEY_C)) {
+            *menuState = LOAD;
+        } else if (IsKeyPressed(KEY_S)) {
+            *menuState = SAVE;
+        } else if (IsKeyPressed(KEY_R)) {
+            *menuState = RANKING;
+        }
+
+    }
+
     return;
 }
 

@@ -1,24 +1,3 @@
-# TODO
-- [ ] Data structs
-  - [ ] Farmer
-  - [ ] Shroom
-  - [ ] Milipede
-  - [ ] Spider
-  - [ ] Game
-- [ ] Game Operation
-  - [ ] Behavior/states
-    - [ ] Farmer
-    - [ ] Shroom
-    - [ ] Milipede
-    - [ ] Spider
-    - [ ] Gamestate
-- [ ] Graphic tasks
-  - [ ] Player name input
-  - [ ] Menu option
-  - [ ] Scene
-  - [ ] Game status
-  
-  
 # Build Instructions
 
 ## Windows

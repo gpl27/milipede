@@ -46,11 +46,11 @@ typedef enum {
 
 typedef enum {
     HIDDEN,
-    START,
+    ACTIVE,
     LOAD,
     SAVE,
     RANKING,
-    EXIT_MENU,
+    EXIT_GAME_REQUEST,
     EXIT_GAME
 } MenuState;
 
