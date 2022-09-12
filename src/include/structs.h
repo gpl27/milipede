@@ -103,8 +103,7 @@ void InitState(State *gameState);
 
 /* Update Functions */
 void UpdateFarmer(Farmer *farmer);
-void UpdateState(State *gameState);
-void UpdateMenuState(MenuState *menuState);
+void UpdateStates(State *gameState, MenuState *menuState);
 void UpdateSpiders(Spider spiders[]);
 
 #endif

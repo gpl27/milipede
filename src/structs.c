@@ -96,40 +96,46 @@ void UpdateFarmer(Farmer *farmer) {
     return;
 }
 
-void UpdateState(State *gameState) {
+void UpdateStates(State *gameState, MenuState *menuState) {
+    // Switch Game and Menu States
     if (IsKeyPressed(KEY_P)) {
         gameState->state = (gameState->state)? PAUSED : PLAYING;
+        *menuState = (*menuState == HIDDEN)? ACTIVE : HIDDEN;
     }
 
+    // 
+    switch (*menuState) {
+        case EXIT_GAME_REQUEST:
+            if (IsKeyPressed(KEY_S)) {
+                *menuState = EXIT_GAME;
+            }
+            else if (IsKeyPressed(KEY_N)) {
+                *menuState = ACTIVE;
+            }
+            break;
+        case ACTIVE:
+            if (IsKeyPressed(KEY_N)) {
+                // TODO: resetar jogo
+            } else if (IsKeyPressed(KEY_C)) {
+                *menuState = LOAD;
+            } else if (IsKeyPressed(KEY_S)) {
+                *menuState = SAVE;
+            } else if (IsKeyPressed(KEY_R)) {
+                *menuState = RANKING;
+            }
+            break;
+        case LOAD:
+            break;
+        case SAVE:
+            break;
+        case RANKING:
+            break;
+
+    }
 
     return;
 }
 
-void UpdateMenuState(MenuState *menuState) {
-
-    if (*menuState == EXIT_GAME_REQUEST) {
-        if (IsKeyPressed(KEY_S)) {
-            *menuState = EXIT_GAME;
-        }
-        else if (IsKeyPressed(KEY_N)) {
-            *menuState = ACTIVE;
-        }
-    } else {
-
-        if (IsKeyPressed(KEY_N)) {
-            // TODO: resetar jogo
-        } else if (IsKeyPressed(KEY_C)) {
-            *menuState = LOAD;
-        } else if (IsKeyPressed(KEY_S)) {
-            *menuState = SAVE;
-        } else if (IsKeyPressed(KEY_R)) {
-            *menuState = RANKING;
-        }
-
-    }
-
-    return;
-}
 
 void UpdateSpiders(Spider spiders[]) {
 

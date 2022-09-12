@@ -52,7 +52,7 @@ int main(void) {
         // Update
         // ------------------------------
             
-        UpdateState(&gameState);    
+        UpdateStates(&gameState, &menuState);    
         
         // windowshouldclose
         if (WindowShouldClose()) {
@@ -66,14 +66,7 @@ int main(void) {
             // UpdateMilipedes
             // UpdateFarmer
             UpdateFarmer(&player);
-
-
         } 
-        // gamestate == paused
-        else if (gameState.state == PAUSED) {
-            UpdateMenuState(&menuState);
-        }
-
             
 
         // ------------------------------
@@ -90,7 +83,7 @@ int main(void) {
               
             // gamestate == paused
             if (gameState.state == PAUSED) {
-                DrawMenu();
+                DrawMenu(menuState);
             }    
                
             if (menuState == EXIT_GAME_REQUEST) {

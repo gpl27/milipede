@@ -78,9 +78,33 @@ void DrawExitWindowRequest(void) {
     return;
 }
 
-void DrawMenu() {
-    DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/4)/2, SCREEN_WIDTH, SCREEN_WIDTH/4, MENU_COLOR);
-    DrawText("MENU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+void DrawMenu(MenuState menuState) {
+
+    DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2, SCREEN_WIDTH, SCREEN_WIDTH/2, MENU_COLOR);
+
+    switch (menuState) {
+        case ACTIVE:
+            char line0[] = "<N> Novo Jooj    <R> Ranking";
+            char line1[] = "<C> Carregar Jooj    <P> Sair do Menu";
+            char line2[] = "<S> Salvar Jooj    <ESC> Sair do Jooj";
+            int line0Length = MeasureText(line0, FONT_SIZE);
+            int line1Length = MeasureText(line1, FONT_SIZE);
+            int line2Length = MeasureText(line2, FONT_SIZE);
+            int padding = (SCREEN_WIDTH/2 - 4*FONT_SIZE)/5;
+
+            DrawText("MENU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + padding, FONT_SIZE, FONT_COLOR);
+            DrawText(line0, (SCREEN_WIDTH - line0Length)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + 2*padding, FONT_SIZE, FONT_COLOR);
+            DrawText(line1, (SCREEN_WIDTH - line1Length)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + 3*padding, FONT_SIZE, FONT_COLOR);
+            DrawText(line2, (SCREEN_WIDTH - line2Length)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + 4*padding, FONT_SIZE, FONT_COLOR);
+
+            break;
+        case LOAD:
+            DrawText("LOAD", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            break;
+        case SAVE:
+            DrawText("SAVE", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            break;
+    }
 
     return;
 }
