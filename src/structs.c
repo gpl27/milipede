@@ -29,11 +29,15 @@ void InitMilipedes(Milipede milipedes[]) {
     int i;
 
     for (i = 0; i < NUM_MILIPEDES; i++) {
-        milipedes[i].length = GetRandomValue(4, 8);
+        milipedes[i].length = GetRandomValue(4, 10);
         milipedes[i].pos.x = GetRandomValue(0, (SCREEN_WIDTH - SHROOM_SIZE));
         milipedes[i].pos.y = GetRandomValue(MENU_HEIGHT, (SCREEN_WIDTH/4*3));
+        milipedes[i].pos.width = 2*MILIPEDE_SIZE;
+        milipedes[i].pos.height = 2*MILIPEDE_SIZE;
         milipedes[i].v.x = MILIPEDE_V;
         milipedes[i].v.y = 0;
+        milipedes[i].pTime = 0.0f;
+        milipedes[i].state = ONSCENE;
     }
 
     return;
@@ -51,6 +55,7 @@ void InitSpiders(Spider spiders[]) {
         // TODO: define spider velocity
         spiders[i].v.x = GetRandomValue(-SPIDER_V, SPIDER_V);
         spiders[i].v.y = GetRandomValue(-SPIDER_V, SPIDER_V);
+        spiders[i].pTime = 0.0f;
     }
 
     return;
@@ -158,9 +163,6 @@ void UpdateStates(State *gameState, MenuState *menuState) {
 
 
 void UpdateSpiders(Spider spiders[]) {
-
-    // TODO: check if all spiders are dead
-
     int i;
     for (i = 0; i < NUM_SPIDERS; i++) {
         // Check collision with walls
@@ -179,6 +181,18 @@ void UpdateSpiders(Spider spiders[]) {
             // Move spiders
             spiders[i].pos.x += spiders[i].v.x;
             spiders[i].pos.y += spiders[i].v.y;
+        } 
+
+        if (spiders[i].state == DEAD) {
+            spiders[i].pTime += GetFrameTime();
+            if (spiders[i].pTime > DEATH_TIME) {
+                spiders[i].pos.x = GetRandomValue(0, (SCREEN_WIDTH - SHROOM_SIZE));
+                spiders[i].pos.y = GetRandomValue(MENU_HEIGHT, (SCREEN_WIDTH/4*3));
+                spiders[i].state = ONSCENE;
+                spiders[i].v.x = GetRandomValue(-SPIDER_V, SPIDER_V);
+                spiders[i].v.y = GetRandomValue(-SPIDER_V, SPIDER_V);
+                spiders[i].pTime = 0.0f;
+            }
         }
 
     }
@@ -188,10 +202,38 @@ void UpdateSpiders(Spider spiders[]) {
 
 void UpdateMilipedes(Milipede milipedes[]) {
 
-    // Check if milipede dead
-        // if true, generate a new one
+    int i;
+    for (i = 0; i < NUM_MILIPEDES; i++) {
 
-    // move milipede
+        if (milipedes[i].state == DEAD) {
+            milipedes[i].pTime += GetFrameTime();
+            if (milipedes[i].pTime > DEATH_TIME) {
+                milipedes[i].length = GetRandomValue(4, 10);
+                milipedes[i].pos.x = GetRandomValue(0, (SCREEN_WIDTH - SHROOM_SIZE));
+                milipedes[i].pos.y = GetRandomValue(MENU_HEIGHT, (SCREEN_WIDTH/4*3));
+                milipedes[i].pTime = 0.0f;
+                milipedes[i].state = ONSCENE;
+            }
+            
+        }
+
+        if (milipedes[i].state == STUNNED) {
+            milipedes[i].pTime += GetFrameTime();
+            milipedes[i].state = (milipedes[i].pTime > STUN_TIME)? ONSCENE : STUNNED;
+        }
+
+        if (milipedes[i].state == ONSCENE) {
+            switch (CheckCollisionBoundary(milipedes[i].pos)) {
+                case LEFT:
+                case RIGHT:
+                    milipedes[i].v.x = -milipedes[i].v.x;
+                    break;
+            }
+            milipedes[i].pos.x += milipedes[i].v.x;
+        }
+
+
+    }
 
     return;
 }
@@ -229,31 +271,37 @@ void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shro
     int i;
     int j;
     for (i = lastShot; ((i > lastShot - 10) && (i >=0)); i--) {
-        // Checa com shroom
-        for (j = 0; j < NUM_SHROOMS; j++) {
-            if (shrooms[j].state == PLANTED && CheckCollisionRecs(shots[i].pos, shrooms[j].pos)) {
-                shrooms[j].state = HARVESTED;
-                farmer->shrooms++;
-                shots[i].state = OFF;
+        if (shots[i].state == ON) {
+
+            // Checa com shroom
+            for (j = 0; j < NUM_SHROOMS; j++) {
+                if (shrooms[j].state == PLANTED && CheckCollisionRecs(shots[i].pos, shrooms[j].pos)) {
+                    shrooms[j].state = HARVESTED;
+                    farmer->shrooms++;
+                    shots[i].state = OFF;
+                }
             }
-        }
-        // Checa com spider
-        for (j = 0; j < NUM_SPIDERS; j++) {
-            if (spiders[j].state != DEAD && CheckCollisionRecs(shots[i].pos, spiders[j].pos)) {
-                spiders[j].state = DEAD;
-                shots[i].state = OFF;
+            // Checa com spider
+            for (j = 0; j < NUM_SPIDERS; j++) {
+                if (spiders[j].state != DEAD && CheckCollisionRecs(shots[i].pos, spiders[j].pos)) {
+                    spiders[j].state = DEAD;
+                    spiders[j].pTime = 0.0f;
+                    shots[i].state = OFF;
+                }
             }
-        }
-        // Checa com milipede
-        // OBS.: DONT UOWK
-        for (j = 0; j < NUM_MILIPEDES; j++) {
-            if (CheckCollisionPointRec(milipedes[j].pos, shots[i].pos)) {
-                milipedes[j].length--;
-                shots[i].state = OFF;
+            // Checa com milipede
+            for (j = 0; j < NUM_MILIPEDES; j++) {
+                if (CheckCollisionRecs(milipedes[j].pos, shots[i].pos)) {
+                    if (milipedes[j].state == ONSCENE) {
+                        milipedes[j].length--;
+                        milipedes[j].state = (milipedes[j].length == 0)? DEAD: STUNNED;
+                        milipedes[j].pTime = 0.0f;
+                        shots[i].state = OFF;
+                    }
+                }
             }
         }
     }
-
     // colisao farmer e aranha
     for (i = 0; i < NUM_SPIDERS; i++) {
         if (CheckCollisionRecs(spiders[i].pos, farmer->pos)) {

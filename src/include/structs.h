@@ -17,6 +17,9 @@
 #define SPIDER_SIZE 20
 #define SPIDER_V 5
 
+#define STUN_TIME 2.0
+#define DEATH_TIME 3.0
+
 #define FARMER_SIZE 20
 #define FARMER_V 5
 #define FARMER_PTIME 3.0
@@ -41,9 +44,9 @@ typedef enum {
 
 typedef enum {
     DEAD,
-    OFFSCENE,
+    STUNNED,
     ONSCENE
-} SpiderState;
+} MobState;
 
 typedef enum {
     PAUSED,
@@ -88,15 +91,18 @@ typedef struct {
 
 // pos will have to be updated when length is incremented and decremented (width and length)
 typedef struct {
-    Vector2 pos;
+    Rectangle pos;
     Vector2 v;
     int length;
+    MobState state;
+    float pTime;
 } Milipede;
 
 typedef struct {
     Rectangle pos;
     Vector2 v;
-    SpiderState state;
+    MobState state;
+    float pTime;
 } Spider;
 
 typedef struct {
@@ -123,6 +129,7 @@ void InitShots(Shot shots[]);
 void UpdateFarmer(Farmer *farmer);
 void UpdateStates(State *gameState, MenuState *menuState);
 void UpdateSpiders(Spider spiders[]);
+void UpdateMilipedes(Milipede milipedes[]);
 void UpdateShots(Shot shots[], State *gameState, Farmer farmer);
 void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[]);
 

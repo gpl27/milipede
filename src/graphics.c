@@ -52,7 +52,15 @@ void DrawMilipedes(Milipede milipedes[]) {
 
     for (i = 0; i < NUM_MILIPEDES; i++) {
         for (j = 0; j < milipedes[i].length; j++) {
-            DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, YELLOW);
+            switch(milipedes[i].state) {
+                case ONSCENE:
+                    DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, YELLOW);
+                    break;
+                default:
+                    DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, ORANGE);
+                    break;
+
+            }
         }
     }
 

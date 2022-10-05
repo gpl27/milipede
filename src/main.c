@@ -68,6 +68,7 @@ int main(void) {
             // UpdateSpiders
             UpdateSpiders(spiders);
             // UpdateMilipedes
+            UpdateMilipedes(milipedes);
             // UpdateFarmer
             UpdateFarmer(&farmer);
             // UpdateShots
