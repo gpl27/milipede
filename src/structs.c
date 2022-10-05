@@ -16,7 +16,8 @@ static void LoadGame(char name[], Game *game);
 static void SaveGame(char name[], Game game);
 static void ResetGame(Game *game);
 static void SaveRanking(Game *game);
-
+static void SortRanking(char ranking[][STR_LEN], int lenght);
+static void SwapPlayers(char p1[], char p2[]);
 
 /*
  * Initialization functions
@@ -510,41 +511,99 @@ static void ResetGame(Game *game) {
 
 
 static void SaveRanking(Game *game) {
-    int i, j;
-    char ranking[RANKING_MAX][STR_LEN];
-    int length = LoadRanking(ranking);
-    char newRanking[RANKING_MAX][STR_LEN];
-    char *tok;
     FILE *f = fopen("ranking.txt", "w"); 
+    int i, j;
+    char ranking[RANKING_MAX+1][STR_LEN];
+    int length = LoadRanking(ranking);
+
 
     if (f == NULL) {
         return;
     }
 
-    if (length == 0) {
-        fprintf(f, "%s\n", TextFormat("%d %s", game->farmer->shrooms, game->gameState->name));
-    } else {
+    
+    strcpy(ranking[length], TextFormat("%d %s", game->farmer->shrooms, game->gameState->name));
 
-        for (i = 0, j = 0; (i < length + 1) && (i < RANKING_MAX); i++) {
-            tok = strtok(ranking[i], " ");
-            if (atoi(tok) > game->farmer->shrooms) {
-                strcpy(newRanking[i], ranking[j++]);
-            } else {
-                strcpy(newRanking[i], TextFormat("%d %s", game->farmer->shrooms, game->gameState->name));
-            }
-        }
+    SortRanking(ranking, length+1);
 
-
-        for (j = 0; j < i; j++) {
-            fprintf(f, "%s\n", newRanking[j]);
-        }
+    for (i=0; (i<length+1) && (i<RANKING_MAX); i++) {
+        fprintf(f, "%s", ranking[i]);
     }
 
+    
+        // for (i = 0, j = 0; (i < length + 1) && (i < RANKING_MAX); i++) {
+        //     tok = strtok(ranking[i], " ");
+        //     if (atoi(tok) > game->farmer->shrooms) {
+        //         strcpy(newRanking[i], ranking[j++]);
+        //     } else {
+        //         strcpy(newRanking[i], TextFormat("%d %s", game->farmer->shrooms, game->gameState->name));
+        //     }
+        // }
 
-   fclose(f);
 
+        // for (j = 0; j < i; j++) {
+        //     fprintf(f, "%s\n", newRanking[j]);
+        // }
+    
+
+
+    fclose(f);
+
+    
+}
+
+static void SortRanking(char ranking[][STR_LEN], int length) {
+    int i;
+    int flag;
+    struct rank {
+        int score;
+        char name[STR_LEN];
+    };
+    struct rank rankingStruct[length];
+    for (i = 0; i < length; i++) {
+        rankingStruct[i].score = atoi(strtok(ranking[i], " "));
+        strcpy(rankingStruct[i].name, strtok(NULL, " "));
+    }
+
+    do {
+        flag = 1;
+        for (i=length; i>0; i--) {
+            
+            if (rankingStruct[i].score < rankingStruct[i-1].score) {
+                flag = 0;
+            } else {
+                struct rank rankTemp;
+
+                rankTemp.score = rankingStruct[i].score;
+                strcpy(rankTemp.name, rankingStruct[i].name);
+
+                rankingStruct[i].score = rankingStruct[i-1].score;
+                strcpy(rankingStruct[i].name, rankingStruct[i-1].name);
+
+                rankingStruct[i-1].score = rankTemp.score;
+                strcpy(rankingStruct[i-1].name, rankTemp.name);
+            }
+        }
+    } while (flag);
+
+    for (i = 0; i < length; i++) {
+        strcpy(ranking[i], TextFormat("%d %s", rankingStruct[i].score, rankingStruct[i].name));
+    }
+    return;
 
 }
+
+static void SwapPlayers(char p1[], char p2[]) {
+    char pTemp;
+
+    strcpy(pTemp, p1);
+    strcpy(p1, p2);
+    strcpy(p2, pTemp);
+
+    return;
+}
+
+
 
 // Retorna o numero de ranking lido
 int LoadRanking(char ranking[RANKING_MAX][STR_LEN]) {
@@ -558,7 +617,9 @@ int LoadRanking(char ranking[RANKING_MAX][STR_LEN]) {
     while(fgets(buff, STR_LEN, f)) {
         strcpy(ranking[i], buff);
         i++;
-    }
+    } 
+
     fclose(f);
+
     return i;
 }
