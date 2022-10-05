@@ -111,6 +111,16 @@ typedef struct {
     ShotState state;
 } Shot;
 
+typedef struct {
+    Farmer *farmer;
+    Shot *shots;
+    Shroom *shrooms;
+    Milipede *milipedes;
+    Spider *spiders;
+    State *gameState;
+    MenuState *menuState;
+} Game;
+
 /* Structure Initialization Functions */
 void InitShrooms(Shroom shroom[]);
 void InitMilipedes(Milipede milipedes[]);
@@ -118,13 +128,14 @@ void InitSpiders(Spider spiders[]);
 void InitFarmer(Farmer *farmer);
 void InitState(State *gameState);
 void InitShots(Shot shots[]);
+void InitGame(Game *game, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[], State *gameState, MenuState *menuState);
 
 /* Update Functions */
 void UpdateFarmer(Farmer *farmer);
-void UpdateStates(State *gameState, MenuState *menuState);
+void UpdateStates(Game *game);
 void UpdateSpiders(Spider spiders[]);
 void UpdateShots(Shot shots[], State *gameState, Farmer farmer);
-void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[]);
+void CheckCollisions(Game *game);
 
 
 #endif

@@ -1,7 +1,6 @@
 /*!
  * Source file for object initialization functions
  */
-
 #include "structs.h"
 #include "raylib.h"
 #include "graphics.h"
@@ -88,6 +87,17 @@ void InitShots(Shot shots[]) {
     return;
 }
 
+void InitGame(Game *game, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[], State *gameState, MenuState *menuState) {
+    game->farmer = farmer;
+    game->shots = shots;
+    game->shrooms = shrooms;
+    game->milipedes = milipedes;
+    game->spiders = spiders;
+    game->gameState = gameState; 
+    game->menuState = menuState;
+
+    return;
+}
 
 /*
  * Update Functions
@@ -116,7 +126,12 @@ void UpdateFarmer(Farmer *farmer) {
     return;
 }
 
-void UpdateStates(State *gameState, MenuState *menuState) {
+void UpdateStates(Game *game) {
+    // Instanciacao
+    MenuState *menuState = game->menuState;
+    State *gameState = game->gameState;
+
+    
     // Switch Game and Menu States
     if (IsKeyPressed(KEY_P)) {
         gameState->state = (gameState->state)? PAUSED : PLAYING;
@@ -145,8 +160,12 @@ void UpdateStates(State *gameState, MenuState *menuState) {
             }
             break;
         case LOAD:
+            // pede nome do jogo a ser carregado
+            // carregar jogo
             break;
         case SAVE:
+            // pedir nome do jogador
+            // salvar jogo
             break;
         case RANKING:
             break;
@@ -222,8 +241,16 @@ void UpdateShots(Shot shots[], State *gameState, Farmer farmer) {
     }
 }
 
-void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[]) {
+void CheckCollisions(Game *game) {
+    // Instanciacao das variaveis do game que serao utilizadas
+    Farmer *farmer = game->farmer;
+    Shot *shots = game->shots;
+    Shroom *shrooms = game->shrooms;
+    Milipede *milipedes = game->milipedes;
+    Spider *spiders = game->spiders;
+    State *gameState = game->gameState; 
 
+    
     // Onde o tiro bate
     int lastShot = (NUM_SHOTS - gameState->shots) - 1;
     int i;
@@ -285,3 +312,4 @@ static Wall CheckCollisionBoundary(Rectangle pos) {
         return NONE;
     }
 }
+
