@@ -6,7 +6,7 @@
 #include "structs.h"
 #include "raylib.h"
 
-
+// Desenha o fundo do jogo (dicas de atalhos e background do jogo)
 void DrawBackground(void) {
     char menuText[] = "ESC - Sair | C - Carregar | P - Pause | R - Ranking";
     int menuTextLength = MeasureText(menuText, FONT_SIZE);
@@ -19,6 +19,7 @@ void DrawBackground(void) {
     return;
 }
 
+// Desenha as estatisticas do jogo (numero de cogumelos, vidas, tiros e o score)
 void DrawStats(State gameState, Farmer farmer) {
     const char *statsText = TextFormat("Score: %2d | Shrooms: %2d | Lives: %1d | Shots: %3d", farmer.shrooms, farmer.shrooms, gameState.lives, gameState.shots);
     int statsTextLength = MeasureText(statsText, FONT_SIZE);
@@ -28,7 +29,7 @@ void DrawStats(State gameState, Farmer farmer) {
     return;
 }
 
-// TODO: Add ShroomState switch
+// Desenha os cogumelos (plantados e devastados)
 void DrawShrooms(Shroom shrooms[]) {
     int i;
 
@@ -46,7 +47,7 @@ void DrawShrooms(Shroom shrooms[]) {
     return;
 }
 
-// TODO: Add Milipede Length switch
+// Desenha milipedes (cabeca e corpo)
 void DrawMilipedes(Milipede milipedes[]) {
     int i, j;
 
@@ -67,7 +68,7 @@ void DrawMilipedes(Milipede milipedes[]) {
     return;
 }
 
-// TODO: add SpiderState switch
+// Desenha aranhas (vivas e/ou mortas)
 void DrawSpiders(Spider spiders[]) {
     int i;
 
@@ -85,6 +86,7 @@ void DrawSpiders(Spider spiders[]) {
     return;
 }
 
+// Desenha o fazendeiro (vivo ou paralizado)
 void DrawFarmer(Farmer farmer) {
     switch (farmer.state) {
         case ALIVE:
@@ -98,6 +100,7 @@ void DrawFarmer(Farmer farmer) {
     return;
 }
 
+// Desenha a janela que confirma se o usuario quer sair do jogo
 void DrawExitWindowRequest(void) {
     char exitText[] = "Você tem certeza que deseja sair? [S/N]";
     int exitTextLength = MeasureText(exitText, FONT_SIZE);
@@ -107,6 +110,7 @@ void DrawExitWindowRequest(void) {
     return;
 }
 
+// Desenha o menu e suas subjanelas
 void DrawMenu(Game game) {
     char line0[] = "<N> Novo Jooj    <R> Ranking";
     char line1[] = "<C> Carregar Jooj    <P> Sair do Menu";
@@ -131,16 +135,15 @@ void DrawMenu(Game game) {
             DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
             break;
         case SAVE:
-            // tela para pedir o nome do jogador
-            DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
-
             DrawText("SAVE", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
             break;
     }
 
     return;
 }
 
+// Desenha os tiros
 void DrawShots(Shot shots[], int shotsLeft) {
     int i;
     int lastShot = (NUM_SHOTS - shotsLeft) - 1;
