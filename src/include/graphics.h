@@ -20,7 +20,7 @@ void DrawSpiders(Spider spiders[]);
 void DrawFarmer(Farmer farmer);
 void DrawStats(State gameState, Farmer farmer);
 void DrawExitWindowRequest(void);
-void DrawMenu(MenuState menuState);
+void DrawMenu(Game game);
 void DrawShots(Shot shots[], int shotsLeft);
 
 #endif
