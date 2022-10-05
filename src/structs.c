@@ -34,6 +34,8 @@ void InitMilipedes(Milipede milipedes[]) {
         milipedes[i].pos.y = GetRandomValue(MENU_HEIGHT, (SCREEN_WIDTH/4*3));
         milipedes[i].v.x = MILIPEDE_V;
         milipedes[i].v.y = 0;
+        milipedes[i].pTime = 0.0f;
+        milipedes[i].state = ONSCENE;
     }
 
     return;
@@ -245,7 +247,6 @@ void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shro
             }
         }
         // Checa com milipede
-        // OBS.: DONT UOWK
         for (j = 0; j < NUM_MILIPEDES; j++) {
             if (CheckCollisionPointRec(milipedes[j].pos, shots[i].pos)) {
                 milipedes[j].length--;

@@ -41,9 +41,9 @@ typedef enum {
 
 typedef enum {
     DEAD,
-    OFFSCENE,
+    STUNNED,
     ONSCENE
-} SpiderState;
+} MobState;
 
 typedef enum {
     PAUSED,
@@ -91,12 +91,14 @@ typedef struct {
     Vector2 pos;
     Vector2 v;
     int length;
+    MobState state;
+    float pTime;
 } Milipede;
 
 typedef struct {
     Rectangle pos;
     Vector2 v;
-    SpiderState state;
+    MobState state;
 } Spider;
 
 typedef struct {
