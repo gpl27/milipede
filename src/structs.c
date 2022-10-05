@@ -6,8 +6,16 @@
 #include "graphics.h"
 #include <string.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 static Wall CheckCollisionBoundary(Rectangle pos);
+
 void GetPlayerName(char name[]);
+static void LoadGame(char fileName[], Game *game);
+static void SaveGame(char name[], Game game);
+
 
 /*
  * Initialization functions
@@ -168,19 +176,21 @@ void UpdateStates(Game *game) {
             }
             break;
         case LOAD:
-            if (IsKeyPressed(KEY_B)) {
-                *menuState = ACTIVE;
-            }
             // pede nome do jogo a ser carregado
             // carregar jogo
+            if (IsKeyPressed(KEY_ENTER)) {
+                LoadGame(gameState->name, &game);
+                *menuState = ACTIVE;
+            }
+            GetPlayerName(gameState->name);
             break;
         case SAVE:
             // pedir nome do jogador
             if (IsKeyPressed(KEY_ENTER)) {
+                SaveGame(gameState->name, game);
                 *menuState = ACTIVE;
             }
             GetPlayerName(gameState->name);
-            // salvar jogo
             break;
         case RANKING:
             if (IsKeyPressed(KEY_B)) {
@@ -390,4 +400,46 @@ static Wall CheckCollisionBoundary(Rectangle pos) {
         return NONE;
     }
 }
+
+static void LoadGame(char fileName[], Game *game) {
+    FILE *f;
+    
+    if ((f = fopen(fileName, "rb")) == NULL) {
+        // erro
+    } else {
+        fread(game->farmer, sizeof(Farmer), 1, f);
+        fread(game->shots, sizeof(Shot), 1, f);
+        fread(game->milipedes, sizeof(Milipede), 1, f);
+        fread(game->spiders, sizeof(Spider), 1, f);
+        fread(game->gameState, sizeof(State), 1, f);
+        fread(game->menuState, sizeof(MenuState), 1, f);
+    }
+
+    fclose(f);
+
+    return;
+}
+
+static void SaveGame(char name[], Game game) {
+    FILE *f;
+
+    char fileName[STR_LEN];
+    strcpy(fileName, strcat(name, ".bin"));
+    
+    if ((f = fopen(fileName, "wb")) == NULL) {
+        // erro
+    } else {
+        fwrite(game.farmer, sizeof(Farmer), 1, f);
+        fwrite(game.shots, sizeof(Shot), 1, f);
+        fwrite(game.milipedes, sizeof(Milipede), 1, f);
+        fwrite(game.spiders, sizeof(Spider), 1, f);
+        fwrite(game.gameState, sizeof(State), 1, f);
+        fwrite(game.menuState, sizeof(MenuState), 1, f);
+    }
+
+    fclose(f);
+
+    return;
+}
+
 
