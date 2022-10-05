@@ -107,7 +107,7 @@ void DrawExitWindowRequest(void) {
     return;
 }
 
-void DrawMenu(MenuState menuState) {
+void DrawMenu(Game game) {
     char line0[] = "<N> Novo Jooj    <R> Ranking";
     char line1[] = "<C> Carregar Jooj    <P> Sair do Menu";
     char line2[] = "<S> Salvar Jooj    <ESC> Sair do Jooj";
@@ -118,7 +118,7 @@ void DrawMenu(MenuState menuState) {
 
     DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2, SCREEN_WIDTH, SCREEN_WIDTH/2, MENU_COLOR);
 
-    switch (menuState) {
+    switch (*game.menuState) {
         case ACTIVE:
             DrawText("MENU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + padding, FONT_SIZE, FONT_COLOR);
             DrawText(line0, (SCREEN_WIDTH - line0Length)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + 2*padding, FONT_SIZE, FONT_COLOR);
@@ -131,6 +131,7 @@ void DrawMenu(MenuState menuState) {
             break;
         case SAVE:
             // tela para pedir o nome do jogador
+            DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
 
             DrawText("SAVE", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
             break;

@@ -4,8 +4,10 @@
 #include "structs.h"
 #include "raylib.h"
 #include "graphics.h"
+#include <string.h>
 
 static Wall CheckCollisionBoundary(Rectangle pos);
+void GetPlayerName(char name[]);
 
 /*
  * Initialization functions
@@ -76,7 +78,7 @@ void InitState(State *gameState) {
     gameState->lives = NUM_LIVES;
     gameState->shots = NUM_SHOTS;
     gameState->state = PLAYING;
-
+    strcpy(gameState->name, "\0");
     return;
 }
 
@@ -136,15 +138,13 @@ void UpdateStates(Game *game) {
     MenuState *menuState = game->menuState;
     State *gameState = game->gameState;
 
-    
-    // Switch Game and Menu States
-    if (IsKeyPressed(KEY_P)) {
-        gameState->state = (gameState->state)? PAUSED : PLAYING;
-        *menuState = (*menuState == HIDDEN)? ACTIVE : HIDDEN;
-    }
-
-    // 
     switch (*menuState) {
+        case HIDDEN:
+            if (IsKeyPressed(KEY_P)) {
+                gameState->state = PAUSED;
+                *menuState = ACTIVE;
+            }
+            break;
         case EXIT_GAME_REQUEST:
             if (IsKeyPressed(KEY_S)) {
                 *menuState = EXIT_GAME;
@@ -162,17 +162,30 @@ void UpdateStates(Game *game) {
                 *menuState = SAVE;
             } else if (IsKeyPressed(KEY_R)) {
                 *menuState = RANKING;
+            } else if (IsKeyPressed(KEY_P)) {
+                gameState->state = PLAYING;
+                *menuState = HIDDEN;
             }
             break;
         case LOAD:
+            if (IsKeyPressed(KEY_B)) {
+                *menuState = ACTIVE;
+            }
             // pede nome do jogo a ser carregado
             // carregar jogo
             break;
         case SAVE:
             // pedir nome do jogador
+            if (IsKeyPressed(KEY_ENTER)) {
+                *menuState = ACTIVE;
+            }
+            GetPlayerName(gameState->name);
             // salvar jogo
             break;
         case RANKING:
+            if (IsKeyPressed(KEY_B)) {
+                *menuState = ACTIVE;
+            }
             break;
 
     }
@@ -180,6 +193,23 @@ void UpdateStates(Game *game) {
     return;
 }
 
+void GetPlayerName(char name[]) {
+    int letterCount = strlen(name);
+    int key = GetKeyPressed(); 
+
+    if (key >= 32 && key <= 125) {
+        name[letterCount] = (char) key;
+        letterCount++;
+        name[letterCount] = '\0';
+    }
+    if (IsKeyPressed(KEY_BACKSPACE)) {
+        letterCount -= 2;
+        letterCount = (letterCount < 0)? 0 : letterCount;
+        name[letterCount] = '\0';
+    }
+
+    return;
+}
 
 void UpdateSpiders(Spider spiders[]) {
     int i;
