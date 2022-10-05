@@ -164,20 +164,22 @@ void UpdateSpiders(Spider spiders[]) {
     int i;
     for (i = 0; i < NUM_SPIDERS; i++) {
         // Check collision with walls
-        switch(CheckCollisionBoundary(spiders[i].pos)) {
-            case LEFT:
-            case RIGHT:
-                spiders[i].v.x = -spiders[i].v.x;
-                break;
-            case TOP:
-            case BOTTOM:
-                spiders[i].v.y = -spiders[i].v.y;
-                break;
-        }
+        if (spiders[i].state != DEAD) {
+            switch(CheckCollisionBoundary(spiders[i].pos)) {
+                case LEFT:
+                case RIGHT:
+                    spiders[i].v.x = -spiders[i].v.x;
+                    break;
+                case TOP:
+                case BOTTOM:
+                    spiders[i].v.y = -spiders[i].v.y;
+                    break;
+            }
 
-        // Move spiders
-        spiders[i].pos.x += spiders[i].v.x;
-        spiders[i].pos.y += spiders[i].v.y;
+            // Move spiders
+            spiders[i].pos.x += spiders[i].v.x;
+            spiders[i].pos.y += spiders[i].v.y;
+        }
 
     }
 
@@ -223,9 +225,36 @@ void UpdateShots(Shot shots[], State *gameState, Farmer farmer) {
 void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[]) {
 
     // Onde o tiro bate
+    int lastShot = (NUM_SHOTS - gameState->shots) - 1;
+    int i;
+    int j;
+    for (i = lastShot; ((i > lastShot - 10) && (i >=0)); i--) {
+        // Checa com shroom
+        for (j = 0; j < NUM_SHROOMS; j++) {
+            if (shrooms[j].state == PLANTED && CheckCollisionRecs(shots[i].pos, shrooms[j].pos)) {
+                shrooms[j].state = HARVESTED;
+                farmer->shrooms++;
+                shots[i].state = OFF;
+            }
+        }
+        // Checa com spider
+        for (j = 0; j < NUM_SPIDERS; j++) {
+            if (spiders[j].state != DEAD && CheckCollisionRecs(shots[i].pos, spiders[j].pos)) {
+                spiders[j].state = DEAD;
+                shots[i].state = OFF;
+            }
+        }
+        // Checa com milipede
+        // OBS.: DONT UOWK
+        for (j = 0; j < NUM_MILIPEDES; j++) {
+            if (CheckCollisionPointRec(milipedes[j].pos, shots[i].pos)) {
+                milipedes[j].length--;
+                shots[i].state = OFF;
+            }
+        }
+    }
 
     // colisao farmer e aranha
-    int i;
     for (i = 0; i < NUM_SPIDERS; i++) {
         if (CheckCollisionRecs(spiders[i].pos, farmer->pos)) {
             // play oof sound

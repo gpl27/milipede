@@ -33,7 +33,14 @@ void DrawShrooms(Shroom shrooms[]) {
     int i;
 
     for (i = 0; i < NUM_SHROOMS; i++) {
-        DrawRectangleRec(shrooms[i].pos, MAROON);
+        switch (shrooms[i].state) {
+            case PLANTED:
+                DrawRectangleRec(shrooms[i].pos, MAROON);
+                break;
+            case HARVESTED:
+                DrawRectangleRec(shrooms[i].pos, GREEN);
+
+        }
     }
 
     return;
@@ -57,7 +64,14 @@ void DrawSpiders(Spider spiders[]) {
     int i;
 
     for (i = 0; i < NUM_SPIDERS; i++) {
-        DrawRectangleRec(spiders[i].pos, DARKPURPLE);
+        switch (spiders[i].state) {
+            case DEAD:
+                DrawRectangleRec(spiders[i].pos, RED);
+                break;
+            default:
+                DrawRectangleRec(spiders[i].pos, DARKPURPLE);
+                break;
+        }
     }
 
     return;
@@ -86,19 +100,18 @@ void DrawExitWindowRequest(void) {
 }
 
 void DrawMenu(MenuState menuState) {
+    char line0[] = "<N> Novo Jooj    <R> Ranking";
+    char line1[] = "<C> Carregar Jooj    <P> Sair do Menu";
+    char line2[] = "<S> Salvar Jooj    <ESC> Sair do Jooj";
+    int line0Length = MeasureText(line0, FONT_SIZE);
+    int line1Length = MeasureText(line1, FONT_SIZE);
+    int line2Length = MeasureText(line2, FONT_SIZE);
+    int padding = (SCREEN_WIDTH/2 - 4*FONT_SIZE)/5;
 
     DrawRectangle(0, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2, SCREEN_WIDTH, SCREEN_WIDTH/2, MENU_COLOR);
 
     switch (menuState) {
         case ACTIVE:
-            char line0[] = "<N> Novo Jooj    <R> Ranking";
-            char line1[] = "<C> Carregar Jooj    <P> Sair do Menu";
-            char line2[] = "<S> Salvar Jooj    <ESC> Sair do Jooj";
-            int line0Length = MeasureText(line0, FONT_SIZE);
-            int line1Length = MeasureText(line1, FONT_SIZE);
-            int line2Length = MeasureText(line2, FONT_SIZE);
-            int padding = (SCREEN_WIDTH/2 - 4*FONT_SIZE)/5;
-
             DrawText("MENU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + padding, FONT_SIZE, FONT_COLOR);
             DrawText(line0, (SCREEN_WIDTH - line0Length)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + 2*padding, FONT_SIZE, FONT_COLOR);
             DrawText(line1, (SCREEN_WIDTH - line1Length)/2, (SCREEN_HEIGHT - SCREEN_WIDTH/2)/2 + 3*padding, FONT_SIZE, FONT_COLOR);
