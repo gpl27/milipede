@@ -7,6 +7,7 @@
 #include "raylib.h"
 
 #define STR_LEN 64
+#define RANKING_MAX 5
 
 #define NUM_SHROOMS 60
 #define SHROOM_SIZE 10
@@ -28,7 +29,7 @@
 
 #define SHOT_V 12
 #define SHOT_SIZE 10
-#define NUM_SHOTS 200
+#define NUM_SHOTS 2
 #define NUM_LIVES 3
 
 /* State Enumerations */
@@ -62,7 +63,8 @@ typedef enum {
     SAVE,
     RANKING,
     EXIT_GAME_REQUEST,
-    EXIT_GAME
+    EXIT_GAME,
+    END_GAME
 } MenuState;
 
 typedef enum {
@@ -145,6 +147,9 @@ void UpdateSpiders(Spider spiders[]);
 void UpdateMilipedes(Milipede milipedes[]);
 void UpdateShots(Shot shots[], State *gameState, Farmer farmer);
 void CheckCollisions(Game *game);
+
+
+int LoadRanking(char ranking[RANKING_MAX][STR_LEN]);
 
 
 #endif

@@ -14,6 +14,8 @@ static Wall CheckCollisionBoundary(Rectangle pos);
 static void GetPlayerName(char name[]);
 static void LoadGame(char name[], Game *game);
 static void SaveGame(char name[], Game game);
+static void ResetGame(Game *game);
+static void SaveRanking(Game *game);
 
 
 /*
@@ -158,6 +160,12 @@ void UpdateStates(Game *game) {
     MenuState *menuState = game->menuState;
     State *gameState = game->gameState;
 
+    // Verifica se chegou o fim do jogo
+    if (gameState->lives == 0 || gameState->shots == 0 || game->farmer->shrooms == NUM_SHROOMS) {
+        gameState->state = PAUSED;
+        *menuState = END_GAME;
+    }
+
     // Atualiza o menu de acordo com o seu estado atual
     // e o atualiza caso alguma tecla seja apertada
     switch (*menuState) {
@@ -178,6 +186,7 @@ void UpdateStates(Game *game) {
         case ACTIVE:
             if (IsKeyPressed(KEY_N)) {
                 // TODO: resetar jogo
+                ResetGame(game);
             } else if (IsKeyPressed(KEY_C)) {
                 *menuState = LOAD;
             } else if (IsKeyPressed(KEY_S)) {
@@ -208,7 +217,14 @@ void UpdateStates(Game *game) {
                 *menuState = ACTIVE;
             }
             break;
-
+        case END_GAME:
+            if (IsKeyPressed(KEY_ENTER)) {
+                SaveRanking(game);
+                ResetGame(game);
+                *menuState = RANKING;
+            }
+            GetPlayerName(gameState->name);
+            break;
     }
 
     return;
@@ -441,7 +457,7 @@ static void LoadGame(char name[], Game *game) {
     strcat(fileName, ".bin");
     
     if ((f = fopen(fileName, "rb")) == NULL) {
-        // erro
+        return;
     } else {
         fread(game->farmer, sizeof(Farmer), 1, f);
         fread(game->shots, sizeof(Shot), NUM_SHOTS, f);
@@ -465,7 +481,7 @@ static void SaveGame(char name[], Game game) {
     strcat(fileName, ".bin");
     
     if ((f = fopen(fileName, "wb")) == NULL) {
-        // erro
+        return;
     } else {
         fwrite(game.farmer, sizeof(Farmer), 1, f);
         fwrite(game.shots, sizeof(Shot), NUM_SHOTS, f);
@@ -481,4 +497,68 @@ static void SaveGame(char name[], Game game) {
     return;
 }
 
+static void ResetGame(Game *game) {
+    InitFarmer(game->farmer);
+    InitShots(game->shots);
+    InitShrooms(game->shrooms);
+    InitMilipedes(game->milipedes);
+    InitSpiders(game->spiders);
+    InitState(game->gameState);
+    game->gameState->state = PAUSED;
+    return;
+}
 
+
+static void SaveRanking(Game *game) {
+    int i, j;
+    char ranking[RANKING_MAX][STR_LEN];
+    int length = LoadRanking(ranking);
+    char newRanking[RANKING_MAX][STR_LEN];
+    char *tok;
+    FILE *f = fopen("ranking.txt", "w"); 
+
+    if (f == NULL) {
+        return;
+    }
+
+    if (length == 0) {
+        fprintf(f, "%s\n", TextFormat("%d %s", game->farmer->shrooms, game->gameState->name));
+    } else {
+
+        for (i = 0, j = 0; (i < length + 1) && (i < RANKING_MAX); i++) {
+            tok = strtok(ranking[i], " ");
+            if (atoi(tok) > game->farmer->shrooms) {
+                strcpy(newRanking[i], ranking[j++]);
+            } else {
+                strcpy(newRanking[i], TextFormat("%d %s", game->farmer->shrooms, game->gameState->name));
+            }
+        }
+
+
+        for (j = 0; j < i; j++) {
+            fprintf(f, "%s\n", newRanking[j]);
+        }
+    }
+
+
+   fclose(f);
+
+
+}
+
+// Retorna o numero de ranking lido
+int LoadRanking(char ranking[RANKING_MAX][STR_LEN]) {
+    FILE *f = fopen("ranking.txt", "r");
+    char buff[STR_LEN];
+    int i = 0;
+    if (f == NULL) {
+        return i;
+    }
+
+    while(fgets(buff, STR_LEN, f)) {
+        strcpy(ranking[i], buff);
+        i++;
+    }
+    fclose(f);
+    return i;
+}

@@ -138,6 +138,18 @@ void DrawMenu(Game game) {
             DrawText("SAVE", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
             DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
             break;
+        case END_GAME:
+            DrawText("SE FODEU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
+            break;
+        case RANKING:
+            DrawText("RANKING", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            char ranking[RANKING_MAX][STR_LEN];
+            int lines = LoadRanking(ranking);
+            for (int i = 0; i < lines; i++) {
+                DrawText(ranking[i], (SCREEN_WIDTH - 100)/2, ((SCREEN_HEIGHT - FONT_SIZE)/2)*(i+1)*FONT_SIZE, FONT_SIZE, FONT_COLOR);
+            }
+            break;
     }
 
     return;
