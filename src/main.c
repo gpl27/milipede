@@ -23,8 +23,11 @@ int main(void) {
     SetTargetFPS(60);
 
     // Inicializar Fazendeiro: Nome, numero de cogumelos colhidos, paralisado/movimento/morto
-    Farmer player;
-    InitFarmer(&player);
+    Farmer farmer;
+    InitFarmer(&farmer);
+    // Inicializar Tiros
+    Shot shots[NUM_SHOTS];
+    InitShots(shots);
     // Inicializar os Cogumelos: vetor de typedef Cogumelo
     Shroom shrooms[NUM_SHROOMS];
     InitShrooms(shrooms);
@@ -39,6 +42,7 @@ int main(void) {
     InitState(&gameState);
     // Inicializar o Status do Menu
     MenuState menuState = HIDDEN;
+
 
 
     // Funcao com loop apenas do Menu inicial
@@ -65,7 +69,11 @@ int main(void) {
             UpdateSpiders(spiders);
             // UpdateMilipedes
             // UpdateFarmer
-            UpdateFarmer(&player);
+            UpdateFarmer(&farmer);
+            // UpdateShots
+            UpdateShots(shots, &gameState, farmer);
+            // Check Collisions
+            CheckCollisions(&gameState, &farmer, shots, shrooms, milipedes, spiders);
         } 
             
 
@@ -75,11 +83,12 @@ int main(void) {
         BeginDrawing();
 
             DrawBackground();
-            DrawStats(gameState, player);
+            DrawStats(gameState, farmer);
             DrawShrooms(shrooms);
             DrawMilipedes(milipedes);
             DrawSpiders(spiders);
-            DrawFarmer(player);  
+            DrawFarmer(farmer);  
+            DrawShots(shots, gameState.shots);
               
             // gamestate == paused
             if (gameState.state == PAUSED) {

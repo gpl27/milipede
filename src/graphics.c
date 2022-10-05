@@ -64,7 +64,14 @@ void DrawSpiders(Spider spiders[]) {
 }
 
 void DrawFarmer(Farmer farmer) {
-    DrawRectangleRec(farmer.pos, FONT_COLOR);
+    switch (farmer.state) {
+        case ALIVE:
+            DrawRectangleRec(farmer.pos, FONT_COLOR);
+            break;
+        case PARALYZED:
+            DrawRectangleRec(farmer.pos, RED);
+            break;
+    }
 
     return;
 }
@@ -104,6 +111,19 @@ void DrawMenu(MenuState menuState) {
         case SAVE:
             DrawText("SAVE", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
             break;
+    }
+
+    return;
+}
+
+void DrawShots(Shot shots[], int shotsLeft) {
+    int i;
+    int lastShot = (NUM_SHOTS - shotsLeft) - 1;
+    
+    for(i = lastShot; ((i > lastShot - 10) && (i >= 0)); i--) {
+        if (shots[i].state == ON) {
+            DrawRectangleRec(shots[i].pos, WHITE);
+        }
     }
 
     return;

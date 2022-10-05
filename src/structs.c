@@ -63,17 +63,31 @@ void InitFarmer(Farmer *farmer) {
     farmer->pos.height = FARMER_SIZE;
     farmer->shrooms = 0;
     farmer->state = ALIVE;
+    farmer->pTime = 0.0f;
 
     return;
 }
 
 void InitState(State *gameState) {
-    gameState->lives = 3;
-    gameState->shots = 200;
+    gameState->lives = NUM_LIVES;
+    gameState->shots = NUM_SHOTS;
     gameState->state = PLAYING;
 
     return;
 }
+
+void InitShots(Shot shots[]) {
+    int i;
+
+    for (i=0; i<NUM_SHOTS; i++) {
+        shots[i].state = OFF;
+        shots[i].pos.width = SHOT_SIZE;
+        shots[i].pos.height = SHOT_SIZE;
+    }
+
+    return;
+}
+
 
 /*
  * Update Functions
@@ -92,6 +106,12 @@ void UpdateFarmer(Farmer *farmer) {
     if (IsKeyDown(KEY_DOWN) && ((farmer->pos.y + farmer->pos.height) < (SCREEN_HEIGHT - MENU_HEIGHT))) {
         farmer->pos.y += FARMER_V;
     }
+
+    if (farmer->state == PARALYZED) {
+        farmer->pTime += GetFrameTime();
+        farmer->state = (farmer->pTime > FARMER_PTIME)? ALIVE : PARALYZED;
+    }
+
 
     return;
 }
@@ -170,6 +190,54 @@ void UpdateMilipedes(Milipede milipedes[]) {
         // if true, generate a new one
 
     // move milipede
+
+    return;
+}
+
+void UpdateShots(Shot shots[], State *gameState, Farmer farmer) {
+    int i;
+    int lastShot = (NUM_SHOTS - gameState->shots) - 1;
+
+    // Check for fired shot
+    if (IsKeyPressed(KEY_SPACE)) {
+        if (gameState->shots > 0 && farmer.state != PARALYZED) {
+            // POssivel bugzin aqui kkk
+            shots[++lastShot].pos.x = farmer.pos.x;
+            shots[lastShot].pos.y = farmer.pos.y;
+            shots[lastShot].state = ON;
+            gameState->shots--;
+        }
+    }
+
+    // Shot movement
+    for(i = lastShot; ((i > lastShot - 10) && (i >= 0)); i--) {
+        if (shots[i].state == ON) {
+            shots[i].pos.y -= SHOT_V;
+            if (CheckCollisionBoundary(shots[i].pos)) {
+                shots[i].state = OFF;
+            }
+        }
+    }
+}
+
+void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[]) {
+
+    // Onde o tiro bate
+
+    // colisao farmer e aranha
+    int i;
+    for (i = 0; i < NUM_SPIDERS; i++) {
+        if (CheckCollisionRecs(spiders[i].pos, farmer->pos)) {
+            // play oof sound
+
+            if (farmer->state == ALIVE && gameState->lives > 0) {
+                farmer->state = PARALYZED;
+                farmer->pTime = 0.0f;
+                gameState->lives--;
+            }
+
+        }
+    }
 
     return;
 }

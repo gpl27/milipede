@@ -19,13 +19,19 @@
 
 #define FARMER_SIZE 20
 #define FARMER_V 5
+#define FARMER_PTIME 3.0
+
+#define SHOT_V 12
+#define SHOT_SIZE 10
+#define NUM_SHOTS 10
+#define NUM_LIVES 3
 
 /* State Enumerations */
 typedef enum {
     SLAIN,
     PARALYZED,
     ALIVE
-} PlayerState;
+} FarmerState;
 
 typedef enum {
     PLANTED,
@@ -55,6 +61,11 @@ typedef enum {
 } MenuState;
 
 typedef enum {
+    OFF,
+    ON
+} ShotState;
+
+typedef enum {
     NONE,
     TOP,
     RIGHT,
@@ -66,7 +77,8 @@ typedef enum {
 typedef struct {
     Rectangle pos;
     int shrooms;
-    PlayerState state;
+    FarmerState state;
+    float pTime;
 } Farmer;
 
 typedef struct {
@@ -94,16 +106,25 @@ typedef struct {
     GameState state;
 } State;
 
+typedef struct {
+    Rectangle pos;
+    ShotState state;
+} Shot;
+
 /* Structure Initialization Functions */
 void InitShrooms(Shroom shroom[]);
 void InitMilipedes(Milipede milipedes[]);
 void InitSpiders(Spider spiders[]);
 void InitFarmer(Farmer *farmer);
 void InitState(State *gameState);
+void InitShots(Shot shots[]);
 
 /* Update Functions */
 void UpdateFarmer(Farmer *farmer);
 void UpdateStates(State *gameState, MenuState *menuState);
 void UpdateSpiders(Spider spiders[]);
+void UpdateShots(Shot shots[], State *gameState, Farmer farmer);
+void CheckCollisions(State *gameState, Farmer *farmer, Shot shots[], Shroom shrooms[], Milipede milipedes[], Spider spiders[]);
+
 
 #endif

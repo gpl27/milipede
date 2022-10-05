@@ -21,5 +21,6 @@ void DrawFarmer(Farmer farmer);
 void DrawStats(State gameState, Farmer farmer);
 void DrawExitWindowRequest(void);
 void DrawMenu(MenuState menuState);
+void DrawShots(Shot shots[], int shotsLeft);
 
 #endif
