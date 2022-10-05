@@ -28,7 +28,7 @@
 
 #define SHOT_V 12
 #define SHOT_SIZE 10
-#define NUM_SHOTS 100
+#define NUM_SHOTS 200
 #define NUM_LIVES 3
 
 /* State Enumerations */
@@ -110,7 +110,7 @@ typedef struct {
 typedef struct {
     int shots;
     int lives;
-    char *name;
+    char name[STR_LEN];
     GameState state;
 } State;
 

@@ -96,7 +96,7 @@ int main(void) {
               
             // gamestate == paused
             if (gameState.state == PAUSED) {
-                DrawMenu(menuState);
+                DrawMenu(game);
             }    
                
             if (menuState == EXIT_GAME_REQUEST) {
