@@ -13,7 +13,7 @@
 static Wall CheckCollisionBoundary(Rectangle pos);
 
 void GetPlayerName(char name[]);
-static void LoadGame(char fileName[], Game *game);
+static void LoadGame(char name[], Game *game);
 static void SaveGame(char name[], Game game);
 
 
@@ -179,7 +179,7 @@ void UpdateStates(Game *game) {
             // pede nome do jogo a ser carregado
             // carregar jogo
             if (IsKeyPressed(KEY_ENTER)) {
-                LoadGame(gameState->name, &game);
+                LoadGame(gameState->name, game);
                 *menuState = ACTIVE;
             }
             GetPlayerName(gameState->name);
@@ -187,7 +187,7 @@ void UpdateStates(Game *game) {
         case SAVE:
             // pedir nome do jogador
             if (IsKeyPressed(KEY_ENTER)) {
-                SaveGame(gameState->name, game);
+                SaveGame(gameState->name, *game);
                 *menuState = ACTIVE;
             }
             GetPlayerName(gameState->name);
@@ -401,8 +401,12 @@ static Wall CheckCollisionBoundary(Rectangle pos) {
     }
 }
 
-static void LoadGame(char fileName[], Game *game) {
+static void LoadGame(char name[], Game *game) {
     FILE *f;
+
+    char fileName[STR_LEN];
+    strcpy(fileName, name);
+    strcat(fileName, ".bin");
     
     if ((f = fopen(fileName, "rb")) == NULL) {
         // erro
@@ -424,7 +428,8 @@ static void SaveGame(char name[], Game game) {
     FILE *f;
 
     char fileName[STR_LEN];
-    strcpy(fileName, strcat(name, ".bin"));
+    strcpy(fileName, name);
+    strcat(fileName, ".bin");
     
     if ((f = fopen(fileName, "wb")) == NULL) {
         // erro

@@ -128,6 +128,7 @@ void DrawMenu(Game game) {
             break;
         case LOAD:
             DrawText("LOAD", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
             break;
         case SAVE:
             // tela para pedir o nome do jogador
