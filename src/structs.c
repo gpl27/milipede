@@ -219,7 +219,6 @@ void UpdateStates(Game *game) {
             break;
         case END_GAME:
             if (IsKeyPressed(KEY_ENTER)) {
-                SaveRanking(game);
                 ResetGame(game);
                 *menuState = RANKING;
             }

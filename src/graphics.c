@@ -55,7 +55,11 @@ void DrawMilipedes(Milipede milipedes[]) {
         for (j = 0; j < milipedes[i].length; j++) {
             switch(milipedes[i].state) {
                 case ONSCENE:
-                    DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, YELLOW);
+                    if (j == 0) {
+                        DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, ORANGE);
+                    } else {
+                        DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, YELLOW);
+                    }
                     break;
                 default:
                     DrawCircle((milipedes[i].pos.x + (j*2*MILIPEDE_SIZE)), milipedes[i].pos.y, MILIPEDE_SIZE, ORANGE);
@@ -139,16 +143,11 @@ void DrawMenu(Game game) {
             DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
             break;
         case END_GAME:
-            DrawText("SE FODEU", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
+            DrawText("FIM DE JOGO :)", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
             DrawText(game.gameState->name, (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2 + FONT_SIZE, FONT_SIZE, FONT_COLOR);
             break;
         case RANKING:
             DrawText("RANKING", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
-            char ranking[RANKING_MAX][STR_LEN];
-            int lines = LoadRanking(ranking);
-            for (int i = 0; i < lines; i++) {
-                DrawText(ranking[i], (SCREEN_WIDTH - 100)/2, ((SCREEN_HEIGHT - FONT_SIZE)/2)*(i+1)*FONT_SIZE, FONT_SIZE, FONT_COLOR);
-            }
             break;
     }
 

@@ -29,7 +29,7 @@
 
 #define SHOT_V 12
 #define SHOT_SIZE 10
-#define NUM_SHOTS 2
+#define NUM_SHOTS 200
 #define NUM_LIVES 3
 
 /* State Enumerations */
