@@ -43,6 +43,9 @@ int main(void) {
     // Inicializar o Status do Menu
     MenuState menuState = HIDDEN;
 
+    // Inicializar a estrutura do jogo
+    Game game;
+    InitGame(&game, &farmer, shots, shrooms, milipedes, spiders, &gameState, &menuState);
 
 
     // Funcao com loop apenas do Menu inicial
@@ -56,7 +59,7 @@ int main(void) {
         // Update
         // ------------------------------
             
-        UpdateStates(&gameState, &menuState);    
+        UpdateStates(&game);    
         
         // windowshouldclose
         if (WindowShouldClose()) {
@@ -74,7 +77,7 @@ int main(void) {
             // UpdateShots
             UpdateShots(shots, &gameState, farmer);
             // Check Collisions
-            CheckCollisions(&gameState, &farmer, shots, shrooms, milipedes, spiders);
+            CheckCollisions(&game);
         } 
             
 

@@ -130,6 +130,8 @@ void DrawMenu(MenuState menuState) {
             DrawText("LOAD", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
             break;
         case SAVE:
+            // tela para pedir o nome do jogador
+
             DrawText("SAVE", (SCREEN_WIDTH - 100)/2, (SCREEN_HEIGHT - FONT_SIZE)/2, FONT_SIZE, FONT_COLOR);
             break;
     }
