@@ -444,9 +444,10 @@ static void LoadGame(char name[], Game *game) {
         // erro
     } else {
         fread(game->farmer, sizeof(Farmer), 1, f);
-        fread(game->shots, sizeof(Shot), 1, f);
-        fread(game->milipedes, sizeof(Milipede), 1, f);
-        fread(game->spiders, sizeof(Spider), 1, f);
+        fread(game->shots, sizeof(Shot), NUM_SHOTS, f);
+        fread(game->shrooms, sizeof(Shroom), NUM_SHROOMS, f);
+        fread(game->milipedes, sizeof(Milipede), NUM_MILIPEDES, f);
+        fread(game->spiders, sizeof(Spider), NUM_SPIDERS, f);
         fread(game->gameState, sizeof(State), 1, f);
         fread(game->menuState, sizeof(MenuState), 1, f);
     }
@@ -467,9 +468,10 @@ static void SaveGame(char name[], Game game) {
         // erro
     } else {
         fwrite(game.farmer, sizeof(Farmer), 1, f);
-        fwrite(game.shots, sizeof(Shot), 1, f);
-        fwrite(game.milipedes, sizeof(Milipede), 1, f);
-        fwrite(game.spiders, sizeof(Spider), 1, f);
+        fwrite(game.shots, sizeof(Shot), NUM_SHOTS, f);
+        fwrite(game.shrooms, sizeof(Shroom), NUM_SHROOMS, f);
+        fwrite(game.milipedes, sizeof(Milipede), NUM_MILIPEDES, f);
+        fwrite(game.spiders, sizeof(Spider), NUM_SPIDERS, f);
         fwrite(game.gameState, sizeof(State), 1, f);
         fwrite(game.menuState, sizeof(MenuState), 1, f);
     }
