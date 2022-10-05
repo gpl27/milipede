@@ -5,7 +5,13 @@
 #include "raylib.h"
 #include "graphics.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 static Wall CheckCollisionBoundary(Rectangle pos);
+static void LoadGame(char fileName[], Game *game);
+static void SaveGame(char name[], Game game);
 
 /*
  * Initialization functions
@@ -165,12 +171,15 @@ void UpdateStates(Game *game) {
             }
             break;
         case LOAD:
-            // pede nome do jogo a ser carregado
-            // carregar jogo
+            // do while name !exists
+                // pede nome do jogo a ser carregado
+            char fileName[] = "stuardo.bin";
+            LoadGame(fileName, game);
             break;
         case SAVE:
             // pedir nome do jogador
-            // salvar jogo
+            char name[] = "stuardo";
+            SaveGame(name, *game);
             break;
         case RANKING:
             break;
@@ -360,4 +369,46 @@ static Wall CheckCollisionBoundary(Rectangle pos) {
         return NONE;
     }
 }
+
+static void LoadGame(char fileName[], Game *game) {
+    FILE *f;
+    
+    if ((f = fopen(fileName, "rb")) == NULL) {
+        // erro
+    } else {
+        fread(game->farmer, sizeof(Farmer), 1, f);
+        fread(game->shots, sizeof(Shot), 1, f);
+        fread(game->milipedes, sizeof(Milipede), 1, f);
+        fread(game->spiders, sizeof(Spider), 1, f);
+        fread(game->gameState, sizeof(State), 1, f);
+        fread(game->menuState, sizeof(MenuState), 1, f);
+    }
+
+    fclose(f);
+
+    return;
+}
+
+static void SaveGame(char name[], Game game) {
+    FILE *f;
+
+    char fileName[STR_LEN];
+    strcpy(fileName, strcat(name, ".bin"));
+    
+    if ((f = fopen(fileName, "wb")) == NULL) {
+        // erro
+    } else {
+        fwrite(game.farmer, sizeof(Farmer), 1, f);
+        fwrite(game.shots, sizeof(Shot), 1, f);
+        fwrite(game.milipedes, sizeof(Milipede), 1, f);
+        fwrite(game.spiders, sizeof(Spider), 1, f);
+        fwrite(game.gameState, sizeof(State), 1, f);
+        fwrite(game.menuState, sizeof(MenuState), 1, f);
+    }
+
+    fclose(f);
+
+    return;
+}
+
 

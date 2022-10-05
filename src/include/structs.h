@@ -6,6 +6,8 @@
 #define STRUCTS_H
 #include "raylib.h"
 
+#define STR_LEN 64
+
 #define NUM_SHROOMS 60
 #define SHROOM_SIZE 10
 
